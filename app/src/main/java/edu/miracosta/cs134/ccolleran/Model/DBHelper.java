@@ -2,11 +2,15 @@ package edu.miracosta.cs134.ccolleran.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper
 {
@@ -58,12 +62,14 @@ public class DBHelper extends SQLiteOpenHelper
      * Adds a new task to the database
      *
      * @param task the new task to be added
+     * @return the newly assigned ID (primary key)
      */
-    public void addTask(Task task)
+    public long addTask(Task task)
     {
+        long id;
         // Decide whether we're reading or writing to/from the database
 
-        // For adding tasks we are writing to the database
+        // For ADDING tasks we are WRITING to the database
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -76,9 +82,66 @@ public class DBHelper extends SQLiteOpenHelper
         values.put(FIELD_DESCRIPTION, task.getmDescription());
         values.put(FIELD_IS_DONE, task.ismIsDone() ? 1 : 0); // ternary statement so sql doesnt bomb out
 
-        db.insert(TABLE_NAME, null, values);
+        id = db.insert(TABLE_NAME, null, values);
 
         // After we're done, close the connection to the database
         db.close();
+        return id;
+    }
+
+    public List<Task> getAllTasks()
+    {
+
+        List<Task> allTasks = new ArrayList<>();
+        // Get the tasks from the database
+
+        // For GETTING tasks we are READING to the database
+        SQLiteDatabase db = getReadableDatabase();
+
+        // Query the database to retrieve all records
+        // Store them in a data structure known as a cursor
+        Cursor cursor = db.query(TABLE_NAME, // What table to query from
+                new String[]{KEY_FIELD_ID, FIELD_DESCRIPTION, FIELD_IS_DONE}, // Saying which fields we want
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        // Loop through the cursor results, one at a time
+        // 1) Instantiate a new Task object
+        // 2) Add the new Task to the List
+
+        if (cursor.moveToFirst()) // seeing if the cursor has anything in it
+        {
+            do
+            {
+                long id = cursor.getLong(0); // getters parameters are the indexes of the array which the cooresponding values are stored
+                String description = cursor.getString(1);
+                boolean isDone = cursor.getInt(2) == 1; // easy trick to get sql INTEGER to java boolean
+
+                allTasks.add(new Task(id, description, isDone)); // adding task to the list
+            }
+            while(cursor.moveToNext()); // Go to next Task
+        }
+
+        // Close the cursor (if not done database will start to run slowly)
+        cursor.close();
+
+        // Close the connection (DO THIS BEFORE WRITING MORE CODE TO MAKE SURE CLOSES/ DON'T FORGET)
+        db.close();
+
+        return allTasks;
+    }
+
+    public void clearAllTasks() // method to delete all records within the table (table still exists)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.delete(TABLE_NAME, null, null);
+
+
+        db.close(); // make sure to close database connection
     }
 }

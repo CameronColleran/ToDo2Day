@@ -2,11 +2,11 @@ package edu.miracosta.cs134.ccolleran.Model;
 
 public class Task
 {
-    private int mId;
+    private long mId; // database id's are always longs so we can use very large numbers
     private String mDescription;
     private boolean mIsDone;
 
-    public Task(int id, String description, boolean isDone)
+    public Task(long id, String description, boolean isDone)
     {
         mId = id;
         mDescription = description;
@@ -15,7 +15,7 @@ public class Task
 
     public Task(String description, boolean isDone)
     {
-        this(-1, description, isDone); // using previous constructor
+        this(-1, description, isDone); // using previous constructor, -1 because database automatically assigns
     }
 
     public Task(String mDescription)
@@ -23,12 +23,12 @@ public class Task
         this(-1, mDescription, false);
     }
 
-    public int getmId()
+    public long getmId()
     {
         return mId;
     }
 
-    public void setmId(int mId)
+    public void setmId(long mId)
     {
         this.mId = mId;
     }
