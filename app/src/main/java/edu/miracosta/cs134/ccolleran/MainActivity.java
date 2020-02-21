@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity
 
     public void addTask(View v)
     {
+        if (taskListView.getAdapter() == null) // if adapter has been set to null from clearAllTasks
+        {
+            taskListView.setAdapter(mTaskListAdapter);
+        }
+
         // Extract description from the EditText
         String description = descriptionEditText.getText().toString();
 
@@ -83,6 +88,8 @@ public class MainActivity extends AppCompatActivity
         mAllTasks.add(newTask);
 
         mTaskListAdapter.notifyDataSetChanged(); // Updating list view/adapter
+
+        descriptionEditText.setText(""); // setting text back to nothing for easier use
 
     }
 
