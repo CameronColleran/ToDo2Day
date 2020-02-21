@@ -23,6 +23,7 @@
             android:gravity="center_horizontal|center_vertical"
             android:hint="@string/task"
             android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -33,7 +34,6 @@
             android:id="@+id/addTaskButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
             android:onClick="addTask"
             android:text="@string/add"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -60,8 +60,9 @@
             android:paddingRight="30dp"
             android:paddingBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clearAllTasksButton"
-            tools:layout_editor_absoluteX="30dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clearAllTasksButton">
 
         </ListView>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,12 +38,6 @@ public class MainActivity extends AppCompatActivity
         mDB = new DBHelper(this);
         //mDB.clearAllTasks();
 
-        mDB.addTask(new Task("Wash the dishes"));
-        mDB.addTask(new Task("Iron pants"));
-        mDB.addTask(new Task("Gradle projects"));
-        mDB.addTask(new Task("Shave"));
-        mDB.addTask(new Task("Finish thing"));
-
         mAllTasks = mDB.getAllTasks();
 
         // Instantiate the ListAdapter
@@ -88,7 +82,17 @@ public class MainActivity extends AppCompatActivity
         // Also add the new task to the list
         mAllTasks.add(newTask);
 
+        mTaskListAdapter.notifyDataSetChanged(); // Updating list view/adapter
 
+    }
+
+    public void clearAllTasks(View v)
+    {
+        mAllTasks.clear(); // clearing list
+
+        mDB.clearAllTasks(); // clearing sql database
+        
+        taskListView.setAdapter(null); // clearing taskListView
     }
 
 
