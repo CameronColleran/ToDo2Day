@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -47,13 +48,12 @@ public class MainActivity extends AppCompatActivity
 
 
         // Let's loop through them and print them to the log (deprecated)
-        /*
+
         for (Task task: mAllTasks)
         {
-            Log.i("ToDo2Day", task.toString()); // nothing happens here as expected
+            Log.i("ToDo2Day", task.toString());
         }
 
-         */
 
         // Let's create some dummy data and add it to the database (deprecated)
         /*
@@ -100,6 +100,28 @@ public class MainActivity extends AppCompatActivity
         mDB.clearAllTasks(); // clearing sql database
         
         taskListView.setAdapter(null); // clearing taskListView
+    }
+
+
+    public void changeTaskStatus(View v)
+    {
+
+        CheckBox isDoneCheckBox = findViewById(R.id.isDoneCheckBox);
+
+        Task clickedTask = (Task) v.getTag(); // extracting the tag
+
+        if (isDoneCheckBox.isChecked())
+            clickedTask.setmIsDone(true);
+        else
+            clickedTask.setmIsDone(false);
+        System.out.println("2 " + clickedTask.toString());
+
+        int index = mAllTasks.indexOf(clickedTask); // updating object in local list
+        System.out.println(index);
+        mAllTasks.set(index, clickedTask);
+
+        mDB.updateTask(clickedTask); // updating database
+
     }
 
 

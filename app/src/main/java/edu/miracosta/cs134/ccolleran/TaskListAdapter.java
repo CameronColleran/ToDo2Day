@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Constraints;
 
 import java.util.List;
 
@@ -39,13 +41,15 @@ public class TaskListAdapter extends ArrayAdapter
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(mResource, null);
 
-        CheckBox isDoneCheckBox = view.findViewById(R.id.isDoneCheckBox);
-
         Task selectedTask = mAllTasks.get(position);
+        CheckBox isDoneCheckBox = view.findViewById(R.id.isDoneCheckBox); // Wiring up check box
+
+        System.out.println("1 " + selectedTask.toString());
 
         isDoneCheckBox.setChecked(selectedTask.ismIsDone()); // mark check mark done if marked as done in database
         isDoneCheckBox.setText(selectedTask.getmDescription()); // set text next to check box
 
+        isDoneCheckBox.setTag(selectedTask);
 
         return view;
     }

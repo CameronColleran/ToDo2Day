@@ -43,6 +43,30 @@ public class DBHelper extends SQLiteOpenHelper
         db.execSQL(createSQL);
     }
 
+    public void updateTask(Task task)
+    {
+
+        SQLiteDatabase db = getWritableDatabase();
+        int isDoneStatus; // converting from boolean to int
+        if (task.ismIsDone())
+        {
+            isDoneStatus = 1;
+        }
+        else
+        {
+            isDoneStatus = 0;
+        }
+
+        //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
+        String strSQL = "UPDATE " + TABLE_NAME
+                + " SET " + FIELD_IS_DONE + " = " + isDoneStatus
+                + " WHERE " + KEY_FIELD_ID  + " = " + task.getmId();
+
+        db.execSQL(strSQL);
+
+        db.close();
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
